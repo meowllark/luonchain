@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sarah Lu</title>
+    <link rel="stylesheet" href="https://fonts.cdnfonts.com/css/univers-lt-std">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -51,5 +52,40 @@
     </div>
     
     <div class="large-name">sarah lu</div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get all company name elements
+            const companyNames = document.querySelectorAll('.company-name');
+            
+            // Add click event listener to each company name
+            companyNames.forEach(companyName => {
+                companyName.addEventListener('click', function() {
+                    // Get the section identifier
+                    const section = this.getAttribute('data-section');
+                    
+                    // Toggle active class on the clicked company name
+                    this.classList.toggle('active');
+                    
+                    // Get the corresponding content element
+                    const content = document.querySelector('.' + section + '-content');
+                    
+                    // Toggle active class on the content
+                    if (content) {
+                        content.classList.toggle('active');
+                    }
+                });
+            });
+            
+            // Set Turnkey as active by default
+            const turnkeyName = document.querySelector('[data-section="turnkey"]');
+            const turnkeyContent = document.querySelector('.turnkey-content');
+            
+            if (turnkeyName && turnkeyContent) {
+                turnkeyName.classList.add('active');
+                turnkeyContent.classList.add('active');
+            }
+        });
+    </script>
 </body>
 </html>
