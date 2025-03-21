@@ -145,15 +145,16 @@ p {
 /* Footer */
 .large-name {
     position: fixed;
-    bottom: 0;
+    bottom: -30px;
     left: 0;
-    font-size: 10rem;
+    font-size: 8rem;
     font-weight: 100;
     color: rgba(200, 200, 200, 0.5);
-    line-height: 0.8;
+    line-height: 1;
     z-index: -1;
-    letter-spacing: -0.05em;
+    letter-spacing: -0.02em;
     font-family: 'Univers LT Std', 'Univers', sans-serif;
+    width: 100%;
 }
 
 /* Responsive adjustments */
