@@ -46,7 +46,7 @@
         </div>
         
         <div class="visual-section">
-            <img src="images/artwork.jpg" alt="Abstract blue and pink artwork" class="artwork">
+            <img src="images/artwork.jpg" alt="Abstract blue and pink artwork" class="artwork" id="draggable-image">
             <div class="caption">Collected on Zora</div>
         </div>
     </div>
@@ -55,22 +55,15 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Get all company name elements
+            // Dropdown functionality for company sections
             const companyNames = document.querySelectorAll('.company-name');
             
-            // Add click event listener to each company name
             companyNames.forEach(companyName => {
                 companyName.addEventListener('click', function() {
-                    // Get the section identifier
                     const section = this.getAttribute('data-section');
-                    
-                    // Toggle active class on the clicked company name
                     this.classList.toggle('active');
                     
-                    // Get the corresponding content element
                     const content = document.querySelector('.' + section + '-content');
-                    
-                    // Toggle active class on the content
                     if (content) {
                         content.classList.toggle('active');
                     }
@@ -85,6 +78,82 @@
                 turnkeyName.classList.add('active');
                 turnkeyContent.classList.add('active');
             }
+
+            // Make image draggable
+            const draggableImage = document.getElementById('draggable-image');
+            let isDragging = false;
+            let currentX;
+            let currentY;
+            let initialX;
+            let initialY;
+            let xOffset = 0;
+            let yOffset = 0;
+
+            // Set the initial position
+            draggableImage.style.position = 'relative';
+            
+            function dragStart(e) {
+                if (e.type === "touchstart") {
+                    initialX = e.touches[0].clientX - xOffset;
+                    initialY = e.touches[0].clientY - yOffset;
+                } else {
+                    initialX = e.clientX - xOffset;
+                    initialY = e.clientY - yOffset;
+                }
+
+                if (e.target === draggableImage) {
+                    isDragging = true;
+                }
+            }
+
+            function dragEnd(e) {
+                initialX = currentX;
+                initialY = currentY;
+                isDragging = false;
+            }
+
+            function drag(e) {
+                if (isDragging) {
+                    e.preventDefault();
+                    
+                    if (e.type === "touchmove") {
+                        currentX = e.touches[0].clientX - initialX;
+                        currentY = e.touches[0].clientY - initialY;
+                    } else {
+                        currentX = e.clientX - initialX;
+                        currentY = e.clientY - initialY;
+                    }
+
+                    xOffset = currentX;
+                    yOffset = currentY;
+
+                    setTranslate(currentX, currentY, draggableImage);
+                }
+            }
+
+            function setTranslate(xPos, yPos, el) {
+                el.style.transform = "translate3d(" + xPos + "px, " + yPos + "px, 0)";
+            }
+
+            // Add event listeners
+            draggableImage.addEventListener("mousedown", dragStart, false);
+            document.addEventListener("mouseup", dragEnd, false);
+            document.addEventListener("mousemove", drag, false);
+
+            draggableImage.addEventListener("touchstart", dragStart, false);
+            document.addEventListener("touchend", dragEnd, false);
+            document.addEventListener("touchmove", drag, false);
+
+            // Add a double-click handler to reset position
+            draggableImage.addEventListener("dblclick", function() {
+                xOffset = 0;
+                yOffset = 0;
+                setTranslate(0, 0, draggableImage);
+                initialX = 0;
+                initialY = 0;
+                currentX = 0;
+                currentY = 0;
+            });
         });
     </script>
 </body>
