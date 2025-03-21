@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sarah Lu</title>
+    <link rel="stylesheet" href="https://fonts.cdnfonts.com/css/univers-lt-std">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <a href="#" class="nav-item">Welcome</a>
+        <a href="#" class="nav-item">Get in touch</a>
+    </header>
+    
+    <div class="container">
+        <div class="info-section">
+            <div class="info-container">
+                <h1>Hi, I'm Sarah!</h1>
+                <p>Currently building cool things in hopes of a more decentralized web.</p>
+                
+                <div class="company">
+                    <div class="company-name" data-section="turnkey">
+                        <span>Turnkey</span>
+                        <span class="dropdown-icon">▼</span>
+                    </div>
+                    <p class="company-content turnkey-content active">Leading product growth at Turnkey. Includes product marketing, developer onboarding, and GTM.</p>
+                </div>
+                
+                <div class="company">
+                    <div class="company-name" data-section="layer3">
+                        <span>Layer3</span>
+                        <span class="dropdown-icon">▼</span>
+                    </div>
+                    <p class="company-content layer3-content">Worked on web3 projects and community building at Layer3.</p>
+                </div>
+                
+                <div class="company">
+                    <div class="company-name" data-section="previous">
+                        <span>In a previous life</span>
+                        <span class="dropdown-icon">▼</span>
+                    </div>
+                    <p class="company-content previous-content">Explored various roles in tech and product development before focusing on decentralized technologies.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="visual-section">
+            <img src="images/artwork.jpg" alt="Abstract blue and pink artwork" class="artwork" id="draggable-image">
+            <div class="caption">Collected on Zora</div>
+        </div>
+    </div>
+    
+    <div class="large-name">sarah lu</div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Dropdown functionality for company sections
+            const companyNames = document.querySelectorAll('.company-name');
+            
+            companyNames.forEach(companyName => {
+                companyName.addEventListener('click', function() {
+                    const section = this.getAttribute('data-section');
+                    this.classList.toggle('active');
+                    
+                    const content = document.querySelector('.' + section + '-content');
+                    if (content) {
+                        content.classList.toggle('active');
+                    }
+                });
+            });
+            
+            // Set Turnkey as active by default
+            const turnkeyName = document.querySelector('[data-section="turnkey"]');
+            const turnkeyContent = document.querySelector('.turnkey-content');
+            
+            if (turnkeyName && turnkeyContent) {
+                turnkeyName.classList.add('active');
+                turnkeyContent.classList.add('active');
+            }
+
+            // Make image draggable
+            const draggableImage = document.getElementById('draggable-image');
+            let isDragging = false;
+            let currentX;
+            let currentY;
+            let initialX;
+            let initialY;
+            let xOffset = 0;
+            let yOffset = 0;
+
+            // Set the initial position
+            draggableImage.style.position = 'relative';
+            
+            function dragStart(e) {
+                if (e.type === "touchstart") {
+                    initialX = e.touches[0].clientX - xOffset;
+                    initialY = e.touches[0].clientY - yOffset;
+                } else {
+                    initialX = e.clientX - xOffset;
+                    initialY = e.clientY - yOffset;
+                }
+
+                if (e.target === draggableImage) {
+                    isDragging = true;
+                }
+            }
+
+            function dragEnd(e) {
+                initialX = currentX;
+                initialY = currentY;
+                isDragging = false;
+            }
+
+            function drag(e) {
+                if (isDragging) {
+                    e.preventDefault();
+                    
+                    if (e.type === "touchmove") {
+                        currentX = e.touches[0].clientX - initialX;
+                        currentY = e.touches[0].clientY - initialY;
+                    } else {
+                        currentX = e.clientX - initialX;
+                        currentY = e.clientY - initialY;
+                    }
+
+                    xOffset = currentX;
+                    yOffset = currentY;
+
+                    setTranslate(currentX, currentY, draggableImage);
+                }
+            }
+
+            function setTranslate(xPos, yPos, el) {
+                el.style.transform = "translate3d(" + xPos + "px, " + yPos + "px, 0)";
+            }
+
+            // Add event listeners
+            draggableImage.addEventListener("mousedown", dragStart, false);
+            document.addEventListener("mouseup", dragEnd, false);
+            document.addEventListener("mousemove", drag, false);
+
+            draggableImage.addEventListener("touchstart", dragStart, false);
+            document.addEventListener("touchend", dragEnd, false);
+            document.addEventListener("touchmove", drag, false);
+
+            // Add a double-click handler to reset position
+            draggableImage.addEventListener("dblclick", function() {
+                xOffset = 0;
+                yOffset = 0;
+                setTranslate(0, 0, draggableImage);
+                initialX = 0;
+                initialY = 0;
+                currentX = 0;
+                currentY = 0;
+            });
+        });
+    </script>
+</body>
+</html>
